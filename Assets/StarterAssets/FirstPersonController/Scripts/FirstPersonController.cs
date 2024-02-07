@@ -21,7 +21,13 @@ namespace StarterAssets
 		[Tooltip("Acceleration and deceleration")]
 		public float SpeedChangeRate = 10.0f;
 
-		[Space(10)]
+		[Tooltip("Flashlight model  with child light")]
+        public GameObject flashlight;
+
+		[Tooltip("Sound Effect for the turn on/off of the flashlight")]
+		public AudioSource flashLightSFX;
+
+        [Space(10)]
 		[Tooltip("The height the player can jump")]
 		public float JumpHeight = 1.2f;
 		[Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
@@ -115,14 +121,25 @@ namespace StarterAssets
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
-		}
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                ToggleFlashlight();
+            }
+        }
 
 		private void LateUpdate()
 		{
 			CameraRotation();
 		}
 
-		private void GroundedCheck()
+        void ToggleFlashlight()
+        {
+			// Toggle the state of the flashlight
+			flashLightSFX.Play();
+			flashlight.SetActive(!flashlight.activeSelf);
+        }
+
+        private void GroundedCheck()
 		{
 			// set sphere position, with offset
 			Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z);
